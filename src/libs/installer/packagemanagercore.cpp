@@ -1339,6 +1339,16 @@ PackageManagerCore::PackageManagerCore(qint64 magicmaker, const QList<OperationB
             ProgressCoordinator::instance(), &ProgressCoordinator::printProgressPercentage);
     connect(this, &PackageManagerCore::metaJobInfoMessage,
             ProgressCoordinator::instance(), &ProgressCoordinator::printProgressMessage);
+
+    if (ProgressCoordinator* progressInstance = ProgressCoordinator::instance()) {
+        connect(progressInstance, &ProgressCoordinator::detailTextChanged,
+                this, &PackageManagerCore::installInfoChanged);
+        connect(progressInstance, &ProgressCoordinator::detailTextResetNeeded,
+                this, &PackageManagerCore::installInfoReset);
+        connect(progressInstance, &ProgressCoordinator::totalProcentageChanged,
+                this, &PackageManagerCore::installProgressChanged);
+
+    }
 }
 
 /*!
